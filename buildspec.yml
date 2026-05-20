@@ -20,5 +20,15 @@ phases:
 
   build:
     commands:
-      - echo "Deploying to EC2 via SSH"
-      - ssh -i ~/.ssh/id_rsa ubuntu@54.81.17.152 "cd /home/ubuntu/app && ./scripts/deploy.sh"
+      - echo "Starting deployment to EC2"
+
+      # 🔥 IMPORTANT FIX: correct EC2 folder
+      - ssh -i ~/.ssh/id_rsa ubuntu@54.81.17.152 "
+          set -e &&
+          cd /home/ubuntu/react-nodejs-mysql &&
+          bash -x ./scripts/deploy.sh
+        "
+
+artifacts:
+  files:
+    - '**/*'
