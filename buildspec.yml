@@ -15,14 +15,10 @@ phases:
       - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
       - chmod 400 ~/.ssh/id_rsa
       - ssh-keyscan -H 54.81.17.152 >> ~/.ssh/known_hosts
+
       - echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
   build:
     commands:
-      - echo "Starting deployment"
-      - chmod +x scripts/deploy.sh
-      - ./scripts/deploy.sh
-
-artifacts:
-  files:
-    - '**/*'
+      - echo "Deploying to EC2 via SSH"
+      - ssh -i ~/.ssh/id_rsa ubuntu@54.81.17.152 "cd /home/ubuntu/app && ./scripts/deploy.sh"
