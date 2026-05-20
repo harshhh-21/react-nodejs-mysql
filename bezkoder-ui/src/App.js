@@ -13,7 +13,7 @@ class App extends Component {
       <div>
         <nav className="navbar navbar-expand navbar-dark bg-dark">
           <Link to={"/tutorials"} className="navbar-brand">
-            bezKoder
+            devops pipeline working successfully
           </Link>
           <div className="navbar-nav mr-auto">
             <li className="nav-item">
