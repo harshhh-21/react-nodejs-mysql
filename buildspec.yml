@@ -3,6 +3,8 @@ version: 0.2
 env:
   parameter-store:
     SSH_PRIVATE_KEY: "/devops/sshkey"
+    DOCKER_USERNAME: "/devops/docker/username"
+    DOCKER_TOKEN: "/devops/docker/token"
 
 phases:
 
@@ -13,6 +15,7 @@ phases:
       - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
       - chmod 400 ~/.ssh/id_rsa
       - ssh-keyscan -H 54.81.17.152 >> ~/.ssh/known_hosts
+      - echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
   build:
     commands:
