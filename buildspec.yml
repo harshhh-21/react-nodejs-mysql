@@ -1,18 +1,24 @@
 version: 0.2
 
+env:
+  parameter-store:
+    SSH_PRIVATE_KEY: "/devops/sshkey"
+
 phases:
 
   install:
     runtime-versions:
       docker: 20
+    commands:
+      - echo "Installing SSH key"
+      - mkdir -p ~/.ssh
+      - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+      - chmod 400 ~/.ssh/id_rsa
+      - ssh-keyscan -H 54.81.17.152 >> ~/.ssh/known_hosts
 
   build:
     commands:
-      - echo "Starting Build Phase"
-
-  post_build:
-    commands:
-      - echo "Deployment Phase Started"
+      - echo "Starting deployment"
       - chmod +x scripts/deploy.sh
       - ./scripts/deploy.sh
 
