@@ -1,0 +1,49 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: RDS MYSQL for Project
+
+Resources:
+    
+    SecurityGroup:
+        Type: AWS::EC2::SecurityGroup
+        Properties:
+            GroupDescription: Allow mysql Ports 
+
+            SecurityGroupIngress:
+                - IpProtocol: tcp
+                  FromPort: 3306
+                  ToPort: 3306
+                  CidrIp: 0.0.0.0/0
+    DevopsRDS: 
+        Type: AWS::RDS::DBInstance
+        Properties:
+            DBInstanceIdentifier: devops-mysql-db
+            
+            Engine: mysql
+            EngineVersion: 8.0
+
+            DBInstanceClass: db.t3.micro
+
+            AllocatedStorage: 20
+            
+            MasterUsername: admin
+            MasterUserPassword: Password123
+
+            PubliclyAccessible: true
+
+            BackupRetentionPeriod: 7
+            
+            VPCSecurityGroups:
+                - !GetAtt SecurityGroup.GroupId
+                
+            DBName: devopsdb
+
+            StorageType: gp2
+            
+            MultiAZ: false
+            
+            AutoMinorVersionUpgrade: true     
+
+Outputs:
+    RDSEndpoint:
+        Value: !GetAtt DevopsRDS.Endpoint.Address        

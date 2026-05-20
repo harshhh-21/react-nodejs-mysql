@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+
+  install:
+    runtime-versions:
+      docker: 20
+
+  build:
+    commands:
+      - echo "Starting Build Phase"
+
+  post_build:
+    commands:
+      - echo "Deployment Phase Started"
+      - chmod +x scripts/deploy.sh
+      - ./scripts/deploy.sh
+
+artifacts:
+  files:
+    - '**/*'
